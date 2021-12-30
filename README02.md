@@ -5,3 +5,5 @@
 + `$ docker-compose exec web ./bin/rails -T`でタスクが閲覧できる<br>
 
 + `$ bundle exec rake action_text:install`を実行<br>
+
++ `$ bunle exec rake db:migrate`を実行<br>

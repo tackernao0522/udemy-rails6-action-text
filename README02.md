@@ -7,3 +7,7 @@
 + `$ bundle exec rake action_text:install`を実行<br>
 
 + `$ bunle exec rake db:migrate`を実行<br>
+
+## 7. image_processingをインストール
+
++ `Gemfile`の `gem 'image_processing', '~> 1.2'`をコメントアウトして`$ bundle install`する<br>

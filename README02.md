@@ -491,3 +491,111 @@ Use Ctrl-C to stop
 ```
 
 + 上記の方法だとこの状態でpryと通信ができる<br>
+
+## 13 pry-railsをインストールしてrails consoleでもpryする
+
++ `$ bundle exec rails console`を実行<br>
+```
+root@4f521a846a47:/app# bundle exec rails console
+Loading development environment (Rails 6.0.4.4)
+irb(
+```
+
+```
+// syntaxエラーになってしまう
+irb(main):001:0> show-souce Rails
+Traceback (most recent call last):
+SyntaxError ((irb):1: syntax error, unexpected tCONSTANT, expecting do or '{' or '(')
+show-souce Rails
+           ^~~~~
+```
+
++ `Gemfile`を編集<br>
+
+```
+source 'https://rubygems.org'
+git_source(:github) { |repo| "https://github.com/#{repo}.git" }
+
+ruby '2.6.3'
+
+# Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
+gem 'rails', '~> 6.0.0'
+# Use postgresql as the database for Active Record
+gem 'pg', '>= 0.18', '< 2.0'
+# Use Puma as the app server
+gem 'puma', '~> 3.11'
+# Use SCSS for stylesheets
+gem 'sass-rails', '~> 5'
+# Transpile app-like JavaScript. Read more: https://github.com/rails/webpacker
+gem 'webpacker', '~> 4.0'
+# Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
+gem 'jbuilder', '~> 2.7'
+# Use Redis adapter to run Action Cable in production
+# gem 'redis', '~> 4.0'
+# Use Active Model has_secure_password
+# gem 'bcrypt', '~> 3.1.7'
+
+# Use Active Storage variant
+gem 'image_processing', '~> 1.2'
+
+# Reduces boot times through caching; required in config/boot.rb
+gem 'bootsnap', '>= 1.4.2', require: false
+
+group :development, :test do
+  # Call 'byebug' anywhere in the code to stop execution and get a debugger console
+  gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
+  gem 'pry' // 削除
+  gem 'pry-rails' // 追記
+end
+
+group :development do
+  # Access an interactive console on exception pages or by calling 'console' anywhere in the code.
+  gem 'web-console', '>= 3.3.0'
+  gem 'listen', '>= 3.0.5', '< 3.2'
+end
+
+# Windows does not include zoneinfo files, so bundle the tzinfo-data gem
+gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
+```
+
++ `$ bundle install`を実行<br>
+
++ `$ docker compose down`を実行<br>
+
++ `$ ./bin/docker-compose-attach web`を実行<br>
+
++ `$ bundle exec rails console`を実行するとpryが立ち上がる<br>
+```
+root@6d02f62a5376:/app# bundle exec rails console
+Loading development environment (Rails 6.0.4.4)
+[1] pry(main)>
+```
+
++ `pry(main)> show-source Rails`を実行してみる<br>
+
+```
+root@aeaf745b9400:/app# bundle exec rails c
+Loading development environment (Rails 6.0.4.4)
+[1] pry(main)> show-source Rails
+
+From: /app/vendor/bundle/gems/railties-6.0.4.4/lib/rails.rb:27
+Module name: Rails
+Number of monkeypatches: 3. Use the `-a` option to display all available monkeypatches
+Number of lines: 93
+
+module Rails
+  extend ActiveSupport::Autoload
+
+  autoload :Info
+  autoload :InfoController
+  autoload :MailersController
+  autoload :WelcomeController
+
+  class << self
+    @application = @app_class = nil
+
+    attr_writer :application
+    attr_accessor :app_class, :cache, :logger
+
+<page break> --- Press enter to continue ( q<enter> to break ) --- <page break>
+```

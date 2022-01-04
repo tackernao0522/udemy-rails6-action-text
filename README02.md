@@ -1,26 +1,26 @@
-# セクション3: アプリケーション開発編
+# セクション 3: アプリケーション開発編
 
-## 6. Action Textに必要なマイグクレーションを実行する
+## 6. Action Text に必要なマイグクレーションを実行する
 
-+ `$ docker-compose exec web ./bin/rails -T`でタスクが閲覧できる<br>
+- `$ docker-compose exec web ./bin/rails -T`でタスクが閲覧できる<br>
 
-+ `$ bundle exec rake action_text:install`を実行<br>
+- `$ bundle exec rake action_text:install`を実行<br>
 
-+ `$ bunle exec rake db:migrate`を実行<br>
+- `$ bunle exec rake db:migrate`を実行<br>
 
-## 7. image_processingをインストール
+## 7. image_processing をインストール
 
-+ `Gemfile`の `gem 'image_processing', '~> 1.2'`をコメントアウトを解除して`$ bundle install`する<br>
+- `Gemfile`の `gem 'image_processing', '~> 1.2'`をコメントアウトを解除して`$ bundle install`する<br>
 
-## 8. 投稿(post)をscaffoldする
+## 8. 投稿(post)を scaffold する
 
-+ `$ rails g scaffold post title:string`を実行<br>
+- `$ rails g scaffold post title:string`を実行<br>
 
-+ `$ rails db:migrate`を実行
+- `$ rails db:migrate`を実行
 
-## 9 PostとRichTextを関連付ける
+## 9 Post と RichText を関連付ける
 
-+ `app/models/post.rb`を編集<br>
+- `app/models/post.rb`を編集<br>
 
 ```
 class Post < ApplicationRecord
@@ -28,7 +28,7 @@ class Post < ApplicationRecord
 end
 ```
 
-+ `$ rails console -s`を実行<br>
+- `$ rails console -s`を実行<br>
 
 ```
 irb(main):001:0> post = Post.create!(content: "<p>HEllo, ActionText!</p>")
@@ -74,9 +74,9 @@ irb(main):007:0> post.content.class.table_name
 => "action_text_rich_texts"
 ```
 
-## Strong Parametersについてのおさらい
+## Strong Parameters についてのおさらい
 
-+ `app/controllers/posts_controller.rb`を編集<br>
+- `app/controllers/posts_controller.rb`を編集<br>
 
 ```
 class PostsController < ApplicationController
@@ -151,9 +151,9 @@ class PostsController < ApplicationController
 end
 ```
 
-## 11 viewにRichTextの表示領域を設定する
+## 11 view に RichText の表示領域を設定する
 
-+ `app/views/posts/_form.html.erb`を編集<br>
+- `app/views/posts/_form.html.erb`を編集<br>
 
 ```
 <%= form_with(model: post, local: true) do |form| %>
@@ -184,7 +184,7 @@ end
 <% end %>
 ```
 
-+ `app/views/posts/show.html.erb`を編集<br>
+- `app/views/posts/show.html.erb`を編集<br>
 
 ```
 <p id="notice"><%= notice %></p>
@@ -200,9 +200,9 @@ end
 <%= link_to 'Back', posts_path %>
 ```
 
-## 12 pry-railsをinstallしてデバック
+## 12 pry-rails を install してデバック
 
-+ `Gemfile`を編集<br>
+- `Gemfile`を編集<br>
 
 ```
 source 'https://rubygems.org'
@@ -249,9 +249,9 @@ end
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 ```
 
-+ `$ bundle install`を実行<br>
+- `$ bundle install`を実行<br>
 
-+ `app/controllers/posts_controller.rb`を編集<br>
+- `app/controllers/posts_controller.rb`を編集<br>
 
 ```
 class PostsController < ApplicationController
@@ -328,6 +328,7 @@ end
 ```
 
 `コンソール`<br>
+
 ```
 udemy-rails6-action-text-web-1  | From: /app/app/controllers/posts_controller.rb:6 PostsController#index:
 udemy-rails6-action-text-web-1  |
@@ -338,7 +339,8 @@ udemy-rails6-action-text-web-1  |     8: end
 udemy-rails6-action-text-web-1  |
 ```
 
-+ `$ docker attach --help`で確認<br>
+- `$ docker attach --help`で確認<br>
+
 ```
 Usage:  docker attach [OPTIONS] CONTAINER
 
@@ -350,7 +352,8 @@ Options:
       --sig-proxy            Proxy all received signals to the process (default true)
 ```
 
-+ `$ docker-compose ps --help`で確認<br>
+- `$ docker-compose ps --help`で確認<br>
+
 ```
 Usage:  docker compose ps [SERVICE...]
 
@@ -364,19 +367,21 @@ Options:
       --status stringArray   Filter services by status. Values: [paused | restarting | removing | running | dead | created | exited]
 ```
 
-+ `$ docker-compose ps -q web`を実行して出力されたIDをコピーしておく<br>
+- `$ docker-compose ps -q web`を実行して出力された ID をコピーしておく<br>
+
 ```
 6e019216f7cdf367848af1c9600ed836ea085b9401ada636d7de6662275f0dc8
 ```
 
-+ `$ docker attach 6e019216f7cdf367848af1c9600ed836ea085b9401ada636d7de6662275f0dc8` を実行<br>
+- `$ docker attach 6e019216f7cdf367848af1c9600ed836ea085b9401ada636d7de6662275f0dc8` を実行<br>
+
 ```
 // Enterを押すとirbのようなものが立ち上がる
 [1] pry(#<PostsController>)>
 [2] pry(#<PostsController>)>
 ```
 
-+ pryコンソールに` whereami`と入力しEnterしてみる<br>
+- pry コンソールに`whereami`と入力し Enter してみる<br>
 
 ```
 [1] pry(#<PostsController>)>
@@ -390,7 +395,7 @@ From: /app/app/controllers/posts_controller.rb:6 PostsController#index:
     8: end
 ```
 
-+ pryコンソールに`params`と入力しEnterしてみる<br>
+- pry コンソールに`params`と入力し Enter してみる<br>
 
 ```
 [3] pry(#<PostsController>)> params
@@ -398,7 +403,7 @@ From: /app/app/controllers/posts_controller.rb:6 PostsController#index:
 [4] pry(#<PostsController>)>
 ```
 
-+ pryコンソールに`request`と入力しEnterしてみる<br>
+- pry コンソールに`request`と入力し Enter してみる<br>
 
 ```
 [5] pry(#<PostsController>)> request
@@ -421,7 +426,7 @@ From: /app/app/controllers/posts_controller.rb:6 PostsController#index:
 <page break> --- Press enter to continue ( q<enter> to break ) --- <page break>
 ```
 
-+ pryコンソールに`Rails.env`と入力しEnterしてみる<br>
+- pry コンソールに`Rails.env`と入力し Enter してみる<br>
 
 ```
 [6] pry(#<PostsController>)> Rails.env
@@ -429,7 +434,7 @@ From: /app/app/controllers/posts_controller.rb:6 PostsController#index:
 [7] pry(#<PostsController>)>
 ```
 
-+ pryコンソールに`show-source Rails`と入力しEnterしてみる<br>
+- pry コンソールに`show-source Rails`と入力し Enter してみる<br>
 
 ```
 [8] pry(#<PostsController>)> show-source Rails
@@ -457,23 +462,26 @@ module Rails
 <page break> --- Press enter to continue ( q<enter> to break ) --- <page break>
 ```
 
-+ `$ exitしてコントローラのbinding.pryを消しておく`<br>
+- `$ exitしてコントローラのbinding.pryを消しておく`<br>
 
-+ `$ ls bin/docker-compose-attach`を実行<br>
+- `$ ls bin/docker-compose-attach`を実行<br>
+
 ```
 bin/docker-compose-attach
 ```
 
-+ `$ cat bin/docker-compose-attach`を実行<br>
+- `$ cat bin/docker-compose-attach`を実行<br>
+
 ```
 #!/usr/bin/env bash
 
 docker-compose up -d && docker attach $(docker-compose ps -q $1)
 ```
 
-+ `$ docker compose down`でコンテナーを切断する<br>
+- `$ docker compose down`でコンテナーを切断する<br>
 
-+ `$ ./bin/docker-compose-attach web`を実行<br>
+- `$ ./bin/docker-compose-attach web`を実行<br>
+
 ```
 [+] Running 3/3
  ⠿ Network udemy-rails6-action-text_default  Created                                                                                                                              0.3s
@@ -490,11 +498,12 @@ Puma starting in single mode...
 Use Ctrl-C to stop
 ```
 
-+ 上記の方法だとこの状態でpryと通信ができる<br>
+- 上記の方法だとこの状態で pry と通信ができる<br>
 
-## 13 pry-railsをインストールしてrails consoleでもpryする
+## 13 pry-rails をインストールして rails console でも pry する
 
-+ `$ bundle exec rails console`を実行<br>
+- `$ bundle exec rails console`を実行<br>
+
 ```
 root@4f521a846a47:/app# bundle exec rails console
 Loading development environment (Rails 6.0.4.4)
@@ -510,7 +519,7 @@ show-souce Rails
            ^~~~~
 ```
 
-+ `Gemfile`を編集<br>
+- `Gemfile`を編集<br>
 
 ```
 source 'https://rubygems.org'
@@ -558,20 +567,21 @@ end
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 ```
 
-+ `$ bundle install`を実行<br>
+- `$ bundle install`を実行<br>
 
-+ `$ docker compose down`を実行<br>
+- `$ docker compose down`を実行<br>
 
-+ `$ ./bin/docker-compose-attach web`を実行<br>
+- `$ ./bin/docker-compose-attach web`を実行<br>
 
-+ `$ bundle exec rails console`を実行するとpryが立ち上がる<br>
+- `$ bundle exec rails console`を実行すると pry が立ち上がる<br>
+
 ```
 root@6d02f62a5376:/app# bundle exec rails console
 Loading development environment (Rails 6.0.4.4)
 [1] pry(main)>
 ```
 
-+ `pry(main)> show-source Rails`を実行してみる<br>
+- `pry(main)> show-source Rails`を実行してみる<br>
 
 ```
 root@aeaf745b9400:/app# bundle exec rails c
@@ -598,4 +608,378 @@ module Rails
     attr_accessor :app_class, :cache, :logger
 
 <page break> --- Press enter to continue ( q<enter> to break ) --- <page break>
+```
+
+## 14 もっと pry を使いこなす
+
++ `$ bundle exec rails console`を実行<br>
+
++ `$ edit app/controllers/posts_controller.rb`を実行<br>
+
+```
+root@d78770fd36f0:/app# bundle exec rails c
+Loading development environment (Rails 6.0.4.4)
+[1] pry(main)> edit app/controllers/posts_controller.rb
+```
+
+`result`この中で編集ができてしまう<br>
+
+```
+class PostsController < ApplicationController
+  before_action :set_post, only: %i[ show edit update destroy ]
+
+  # GET /posts or /posts.json
+  def index
+    @posts = Post.all
+  end
+
+  # GET /posts/1 or /posts/1.json
+  def show
+  end
+
+  # GET /posts/new
+  def new
+    @post = Post.new
+  end
+
+  # GET /posts/1/edit
+  def edit
+  end
+
+  # POST /posts or /posts.json
+  def create
+    @post = Post.new(post_params)
+
+    respond_to do |format|
+      if @post.save
+        format.html { redirect_to post_url(@post), notice: "Post was successfully created." }
+        format.json { render :show, status: :created, location: @post }
+      else
+        format.html { render :new, status: :unprocessable_entity }
+        format.json { render json: @post.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
+  # PATCH/PUT /posts/1 or /posts/1.json
+  def update
+    respond_to do |format|
+      if @post.update(post_params)
+        format.html { redirect_to post_url(@post), notice: "Post was successfully updated." }
+        format.json { render :show, status: :ok, location: @post }
+      else
+        format.html { render :edit, status: :unprocessable_entity }
+        format.json { render json: @post.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
+  # DELETE /posts/1 or /posts/1.json
+  def destroy
+    @post.destroy
+
+    respond_to do |format|    @post.destroy
+
+    respond_to do |format|
+      format.html { redirect_to posts_url, notice: "Post was successfully destroyed." }
+      format.json { head :no_content }
+    end
+  end
+
+  private
+    # Use callbacks to share common setup or constraints between actions.
+    def set_post
+      @post = Post.find(params[:id])
+    end
+
+    # Only allow a list of trusted parameters through.
+    def post_params    # Use callbacks to share common setup or constraints between actions.
+    def set_post
+      @post = Post.find(params[:id])
+    end
+
+    # Only allow a list of trusted parameters through.
+    def post_params
+      params.require(:post).permit(:title, :content)
+    end
+end
+```
+
++ `binding.pry`を入れてみる<br>
+
+```
+class PostsController < ApplicationController
+  before_action :set_post, only: %i[ show edit update destroy ]
+
+  # GET /posts or /posts.json
+  def index
+    binding.pry // 編集
+    @posts = Post.all
+  end
+
+  # GET /posts/1 or /posts/1.json
+  def show
+  end
+
+  # GET /posts/new
+  def new
+    @post = Post.new
+  end
+
+  # GET /posts/1/edit
+  def edit
+  end
+
+  # POST /posts or /posts.json
+  def create
+    @post = Post.new(post_params)
+
+    respond_to do |format|
+      if @post.save
+        format.html { redirect_to post_url(@post), notice: "Post was successfully created." }
+        format.json { render :show, status: :created, location: @post }
+      else
+        format.html { render :new, status: :unprocessable_entity }
+        format.json { render json: @post.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
+  # PATCH/PUT /posts/1 or /posts/1.json
+  def update
+    respond_to do |format|
+      if @post.update(post_params)
+        format.html { redirect_to post_url(@post), notice: "Post was successfully updated." }
+        format.json { render :show, status: :ok, location: @post }
+      else
+        format.html { render :edit, status: :unprocessable_entity }
+        format.json { render json: @post.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
+  # DELETE /posts/1 or /posts/1.json
+  def destroy
+    @post.destroy
+
+    respond_to do |format|    @post.destroy
+
+    respond_to do |format|
+      format.html { redirect_to posts_url, notice: "Post was successfully destroyed." }
+      format.json { head :no_content }
+    end
+  end
+
+  private
+    # Use callbacks to share common setup or constraints between actions.
+    def set_post
+      @post = Post.find(params[:id])
+    end
+
+    # Only allow a list of trusted parameters through.
+    def post_params    # Use callbacks to share common setup or constraints between actions.
+    def set_post
+      @post = Post.find(params[:id])
+    end
+
+    # Only allow a list of trusted parameters through.
+    def post_params
+      params.require(:post).permit(:title, :content)
+    end
+end
+```
+
+`console`<br>
+
+```
+From: /app/app/controllers/posts_controller.rb:6 PostsController#index:
+
+    5: def index
+ => 6:   binding.pry
+    7:   @posts = Post.all
+    8: end
+
+[1] pry(#<PostsController>)>
+```
+
++ `上記の状況下でも $ edit app/controllers/posts_controller.rbが打てる`そしてそのまま編集もできる<br>
+
++ `pry コンソールでeditコマンドを打ってpry-byebugを入れてみる`<br>
+
+```
+root@373a32420354:/app# bundle exec rails c
+Loading development environment (Rails 6.0.4.4)
+[1] pry(main)> edit Gemfile
+```
+
+`Gemfile`<br>
+
+```
+group :development, :test do
+  # Call 'byebug' anywhere in the code to stop execution and get a debugger console
+  gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
+  gem 'pry-rails'
+  gem 'pry-byebug' // 追記
+end
+```
+
+```
+[2] pry(main)> edit Gemfile
+[3] pry(main)> exit
+```
+
++ `$ bundle install`を実行<br>
+
++ `$ docker compose down`を実行<br>
+
++ `$ ./bin/docker-compose-attach web`を実行<br>
+
++ `$ bundle exec rails console`を実行<br>
+
++ `$ edit app/controllers/posts_controller.rb`を実行
+
+```
+class PostsController < ApplicationController
+  before_action :set_post, only: %i[ show edit update destroy ]
+
+  # GET /posts or /posts.json
+  def index
+    binding.pry // 追記
+    @foo = 1 // 追記
+    @posts = Post.all
+  end
+
+  # GET /posts/1 or /posts/1.json
+  def show
+  end
+
+  # GET /posts/new
+  def new
+    @post = Post.new
+  end
+
+  # GET /posts/1/edit
+  def edit
+  end
+
+  # POST /posts or /posts.json
+  def create
+    @post = Post.new(post_params)
+
+    respond_to do |format|
+      if @post.save
+        format.html { redirect_to post_url(@post), notice: "Post was successfully created." }
+        format.json { render :show, status: :created, location: @post }
+      else
+        format.html { render :new, status: :unprocessable_entity }
+        format.json { render json: @post.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
+  # PATCH/PUT /posts/1 or /posts/1.json
+  def update
+    respond_to do |format|
+      if @post.update(post_params)
+        format.html { redirect_to post_url(@post), notice: "Post was successfully updated." }
+        format.json { render :show, status: :ok, location: @post }
+      else
+        format.html { render :edit, status: :unprocessable_entity }
+        format.json { render json: @post.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
+  # DELETE /posts/1 or /posts/1.json
+  def destroy
+    @post.destroy
+
+    respond_to do |format|
+      format.html { redirect_to posts_url, notice: "Post was successfully destroyed." }
+      format.json { head :no_content }
+    end
+  end
+
+  private
+    # Use callbacks to share common setup or constraints between actions.
+    def set_post
+      @post = Post.find(params[:id])
+    end
+
+    # Only allow a list of trusted parameters through.
+    def post_params
+      params.require(:post).permit(:title, :content)
+    end
+end
+```
+
++ `ブラウザをlocalhost:3000/posts`でリロード<br>
+
+```
+From: /app/app/controllers/posts_controller.rb:7 PostsController#index:
+
+    5: def index
+    6:   binding.pry
+ => 7:   @foo = 1
+    8:   @posts = Post.all
+    9: end
+
+[1] pry(#<PostsController>)> @foo // 追記
+```
+
++ `enter`すると<br>
+
+```
+From: /app/app/controllers/posts_controller.rb:7 PostsController#index:
+
+    5: def index
+    6:   binding.pry
+ => 7:   @foo = 1
+    8:   @posts = Post.all
+    9: end
+
+[1] pry(#<PostsController>)> @foo
+=> nil
+[2] pry(#<PostsController>)> next // 追記
+```
+
++ `enter`をする<br>
+
+```
+From: /app/app/controllers/posts_controller.rb:8 PostsController#index:
+
+    5: def index
+    6:   binding.pry
+    7:   @foo = 1
+ => 8:   @posts = Post.all
+    9: end
+
+[2] pry(#<PostsController>)> @foo // 追記
+```
+
++ `enter`すると<br>
+
+```
+From: /app/app/controllers/posts_controller.rb:8 PostsController#index:
+
+    5: def index
+    6:   binding.pry
+    7:   @foo = 1
+ => 8:   @posts = Post.all
+    9: end
+
+[2] pry(#<PostsController>)> @foo
+=> 1 //
+[3] pry(#<PostsController>)> next // 追記
+```
+
++ `enter`するとレスポンスが届く<br>
+
+```
+  Rendering posts/index.html.erb within layouts/application
+  Post Load (2.8ms)  SELECT "posts".* FROM "posts"
+  ↳ app/views/posts/index.html.erb:14
+  Rendered posts/index.html.erb within layouts/application (Duration: 229.3ms | Allocations: 522897)
+[Webpacker] Everything's up-to-date. Nothing to do
+Completed 200 OK in 426801ms (Views: 564.7ms | ActiveRecord: 86.6ms | Allocations: 2600297)
 ```

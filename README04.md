@@ -218,3 +218,201 @@ ja:
       post:
         title: タイトル
 ```
+
+## 22 バリデーションを実装する - 投稿のWYSIWYGの長さ
+
++ `$ bundle exec rails c -s`を実行<br>
+
+```
+[1] pry(main)> post = Post.find(5)
+   (0.7ms)  BEGIN
+  Post Load (4.9ms)  SELECT "posts".* FROM "posts" WHERE "posts"."id" = $1 LIMIT $2  [["id", 5], ["LIMIT", 1]]
+=> #<Post:0x0000561f059943a8 id: 5, title: "タイトル", created_at: Fri, 07 Jan 2022 08:07:50 UTC +00:00, updated_at: Fri, 07 Jan 2022 08:07:50 UTC +00:00>
+[2] pry(main)>
+```
+
+```
+[4] pry(main)> post.content
+  ActionText::RichText Load (5.8ms)  SELECT "action_text_rich_texts".* FROM "action_text_rich_texts" WHERE "action_text_rich_texts"."record_id" = $1 AND "action_text_rich_texts"."record_type" = $2 AND "action_text_rich_texts"."name" = $3 LIMIT $4  [["record_id", 5], ["record_type", "Post"], ["name", "content"], ["LIMIT", 1]]
+=> #<ActionText::RichText:0x0000561f03f07698  Rendered vendor/bundle/gems/actiontext-6.0.4.4/app/views/action_text/content/_layout.html.erb (Duration: 13.9ms | Allocations: 621)
+
+ id: 5,
+ name: "content",
+ body: #<ActionText::Content "<div class=\"trix-conte...">,
+ record_type: "Post",
+ record_id: 5,
+ created_at: Fri, 07 Jan 2022 08:07:50 UTC +00:00,
+ updated_at: Fri, 07 Jan 2022 08:07:50 UTC +00:00>
+[5] pry(main)>
+```
+
+```
+[7] pry(main)> post.content.class
+=> ActionText::RichText(id: integer, name: string, body: text, record_type: string, record_id: integer, created_at: datetime, updated_at: datetime)
+[8] pry(main)>
+```
+
+```
+[10] pry(main)> show-source ActionText::RichText
+
+From: /app/vendor/bundle/gems/actiontext-6.0.4.4/app/models/action_text/rich_text.rb:4
+Class name: ActionText::RichText
+Number of monkeypatches: 4. Use the `-a` option to display all available monkeypatches
+Number of lines: 19
+
+class RichText < ActiveRecord::Base
+  self.table_name = "action_text_rich_texts"
+
+  serialize :body, ActionText::Content
+  delegate :to_s, :nil?, to: :body
+
+  belongs_to :record, polymorphic: true, touch: true
+  has_many_attached :embeds
+
+  before_save do
+    self.embeds = body.attachables.grep(ActiveStorage::Blob).uniq if body.present?
+  end
+
+  def to_plain_text
+    body&.to_plain_text.to_s
+  end
+
+  delegate :blank?, :empty?, :present?, to: :to_plain_text
+end
+[11] pry(main)>
+```
+
+```
+[12] pry(main)> post.content.to_plain_text
+=> "背景\n\n２０２０年東京オリンピックを開催します。\n\nつきましては、、、\n内容\n内容\n内容\n内容\n内容\n\n敬具"
+[13] pry(main)>
+```
+
++ 参考: https://api.rubyonrails.org/v6.0.0/ <br>
+
+```
+[15] pry(main)> edit app/models/post.rb
+
+class Post < ApplicationRecord
+  has_rich_text :content
+
+  validates :title, length: {maximum: 32}, presence: true
+
+  validate :validate_content_length
+
+  MAX_CONTENT_LENGTH = 50
+
+  def validate_content_length
+   if  content.to_plain_text.length > MAX_CONTENT_LENGTH
+     errors.add(:content, :too_long)
+   end
+  end
+end
+```
+
+```
+[15] pry(main)> edit config/lacales/ja.yml
+
+ja:
+  activerecord:
+    errors:
+      models:
+        post:
+          attributes:
+            title:
+              blank: が空です。
+              too_long: が%{count}文字を超えています。
+            content:
+              too_long: が長いです。
+    attributes:
+      post:
+        title: タイトル
+        content: コンテンツ
+```
+
+```
+[15] pry(main)> edit app/models/post.rb
+
+class Post < ApplicationRecord
+  has_rich_text :content
+
+  validates :title, length: {maximum: 32}, presence: true
+
+  validate :validate_content_length
+
+  MAX_CONTENT_LENGTH = 50
+
+  def validate_content_length
+   if content.to_plain_text.length > MAX_CONTENT_LENGTH
+     errors.add(:content, :too_long, max_content_length:  MAX_CONTENT_LENGTH)
+   end
+  end
+end
+```
+
+```
+[18] pry(main)> edit config/locales/ja.yml
+
+ja:
+  activerecord:
+    errors:
+      models:
+        post:
+          attributes:
+            title:
+              blank: が空です。
+              too_long: が%{count}文字を超えています。
+            content:
+              too_long: が%{max_content_length}文字を超えています。
+    attributes:
+      post:
+        title: タイトル
+        content: コンテンツ
+```
+
+```
+[15] pry(main)> edit app/models/post.rb
+
+class Post < ApplicationRecord
+  has_rich_text :content
+
+  validates :title, length: {maximum: 32}, presence: true
+
+  validate :validate_content_length
+
+  MAX_CONTENT_LENGTH = 50
+
+  def validate_content_length
+    length = content.to_plain_text.length
+
+    if length > MAX_CONTENT_LENGTH
+      errors.add(
+        :content,
+        :too_long,
+        max_content_length:  MAX_CONTENT_LENGTH,
+        length: length
+      )
+    end
+  end
+end
+```
+
+```
+[20] pry(main)> edit config/locales/ja.yml
+
+ja:
+  activerecord:
+    errors:
+      models:
+        post:
+          attributes:
+            title:
+              blank: が空です。
+              too_long: が%{count}文字を超えています。
+            content:
+              too_long: が%{max_content_length - length}文字を超えています。[%{length}/%{max_content_length}]
+    attributtes:
+      post:
+        title: タイトル
+        content: コンテンツ
+```

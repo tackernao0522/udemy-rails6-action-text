@@ -1,6 +1,6 @@
 ## 20 バリデーションを実装する -投稿のタイトル
 
-+ `app/models/post.rb`を編集<br>
+- `app/models/post.rb`を編集<br>
 
 ```
 class Post < ApplicationRecord
@@ -10,7 +10,7 @@ class Post < ApplicationRecord
 end
 ```
 
-+ `$ bundle exec rails c -s`を実行<br>
+- `$ bundle exec rails c -s`を実行<br>
 
 ```
 [2] pry(main)> post = Post.new // enter
@@ -139,7 +139,7 @@ end
 [40] pry(main)> edit app/models/post.rb // enter
 ```
 
-+ `post.rb`を編集(pryから編集)<br>
+- `post.rb`を編集(pry から編集)<br>
 
 ```
 class Post < ApplicationRecord
@@ -181,4 +181,40 @@ Reloading...
  @details={:title=>[{:error=>:blank}]},
  @messages={:title=>["can't be blank"]}>
 [51] pry(main)>
+```
+
+## 21 バリデーション動作をブラウザから確認する
+
+- 参考： https://guides.rubyonrails.org/i18n.html#configure-the-i18n-module <br>
+
+* `config/initializers/locale.rb`を作成<br>
+
+```
+# config/initializers/locale.rb
+
+# Where the I18n library should search for translation files
+I18n.load_path += Dir[Rails.root.join('lib', 'locale', '*.{rb,yml}')]
+
+# Permitted locales available for the application
+I18n.available_locales = [:en, :ja]
+
+# Set default locale to something other than :en
+I18n.default_locale = :ja
+```
+
+- `config/locales/ja.yml`を作成<br>
+
+```
+ja:
+  activerecord:
+    errors:
+      models:
+        post:
+          attributes:
+            title:
+              blank: が空です。
+              too_long: が%{count}文字を超えています。
+    attributes:
+      post:
+        title: タイトル
 ```

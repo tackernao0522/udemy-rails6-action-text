@@ -219,9 +219,9 @@ ja:
         title: タイトル
 ```
 
-## 22 バリデーションを実装する - 投稿のWYSIWYGの長さ
+## 22 バリデーションを実装する - 投稿の WYSIWYG の長さ
 
-+ `$ bundle exec rails c -s`を実行<br>
+- `$ bundle exec rails c -s`を実行<br>
 
 ```
 [1] pry(main)> post = Post.find(5)
@@ -288,7 +288,7 @@ end
 [13] pry(main)>
 ```
 
-+ 参考: https://api.rubyonrails.org/v6.0.0/ <br>
+- 参考: https://api.rubyonrails.org/v6.0.0/ <br>
 
 ```
 [15] pry(main)> edit app/models/post.rb
